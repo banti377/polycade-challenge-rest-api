@@ -83,7 +83,7 @@ export const getPricingDetailsForMachine = asyncHandler(async (ctx) => {
 			knex.raw(`json_build_object('id', ${tables.priceConfig}.id, 'name', ${tables.priceConfig}.name, 'value', ${tables.priceConfig}.value, 'price', ${tables.priceConfig}.price) as price_config`)
 		])
 		.where(`${tables.price}.id`, '=', machine.pricing_id)
-		.join(
+		.leftJoin(
 			`${tables.priceConfig}`,
 			`${tables.price}.id`,
 			`${tables.priceConfig}.pricing_id`

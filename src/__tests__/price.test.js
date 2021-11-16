@@ -8,6 +8,11 @@ const tables = require('../constants/tables');
 const BASE_URL = '/pricing-models';
 
 describe('Pricing model tests.', () => {
+	afterAll(async () => {
+		// Close server after all tests are executed.
+		await app.close();
+	});
+
 	// From seed
 	const validPriceUUID = '3ba92095-3203-4888-a464-3c7d5d9acd7e';
 	// Generate invalid uuid to test 404.

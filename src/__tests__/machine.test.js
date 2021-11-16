@@ -2,12 +2,15 @@ const request = require('supertest');
 const app = require('../index');
 const { resStatuses } = require('../constants');
 const { v4 } = require('uuid');
-const knex = require('../db');
-const tables = require('../constants/tables');
 
 const BASE_URL = '/machines';
 
 describe('test machines endpoints', () => {
+	afterAll(async () => {
+		// Close server after all tests are executed.
+		await app.close();
+	});
+
 	const validMachineId = '99ade105-dee1-49eb-8ac4-e4d272f89fba';
 	const validPricinModelId = '4d40de8f-68f8-4160-a83a-665dbc92d154';
 

@@ -10,13 +10,14 @@ export const getAllPricingModels = asyncHandler(async (ctx) =>{
 		.select([
 			`${tables.price}.name as model_name`,
 			`${tables.price}.id as model_id`,
-			knex.raw(`json_build_object('id', ${tables.priceConfig}.id, 'name', ${tables.priceConfig}.name, 'value', ${tables.priceConfig}.value, 'price', ${tables.priceConfig}.price) as price_config`)
+			knex.raw(`array_agg(json_build_object('id', ${tables.priceConfig}.id, 'name', ${tables.priceConfig}.name, 'value', ${tables.priceConfig}.value, 'price', ${tables.priceConfig}.price)) as price_config`)
 		])
-		.join(
+		.leftJoin(
 			`${tables.priceConfig}`,
 			`${tables.price}.id`,
 			`${tables.priceConfig}.pricing_id`
-		);
+		)
+		.groupBy(['model_name', 'model_id']);
 
 	ctx.status = 200;
 	ctx.body = {
@@ -66,7 +67,7 @@ export const getSinglePricingModel = asyncHandler(async (ctx) => {
 			knex.raw(`array_agg(json_build_object('id', ${tables.priceConfig}.id, 'name', ${tables.priceConfig}.name, 'value', ${tables.priceConfig}.value, 'price', ${tables.priceConfig}.price)) as priceConfig`)
 		])
 		.where(`${tables.price}.id`, '=', pmId)
-		.join(
+		.leftJoin(
 			`${tables.priceConfig}`,
 			`${tables.price}.id`,
 			`${tables.priceConfig}.pricing_id`
@@ -120,7 +121,7 @@ export const getPriceConfig = asyncHandler(async (ctx) => {
 	const priceConfig = await knex(tables.price)
 		.select([`${tables.priceConfig}.*`])
 		.where(`${tables.price}.id`, '=', pmId)
-		.join(
+		.leftJoin(
 			`${tables.priceConfig}`,
 			`${tables.price}.id`,
 			`${tables.priceConfig}.pricing_id`

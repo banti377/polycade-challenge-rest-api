@@ -1,6 +1,6 @@
-const Koa = require('koa');
-const bodyParser = require('koa-bodyparser');
-const dotenv = require('dotenv');
+import Koa from 'koa';
+import bodyParser from 'koa-bodyparser';
+import dotenv from 'dotenv';
 
 import machineRoutes from './routes/machine-routes';
 import priceRoutes from './routes/price-routes';
