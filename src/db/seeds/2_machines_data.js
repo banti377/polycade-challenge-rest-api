@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const config = require('../../config');
 const tables = require('../../constants/tables');
 

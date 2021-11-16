@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const { v4 } = require('uuid');
 const config = require('../../config');
 const tables = require('../../constants/tables');
