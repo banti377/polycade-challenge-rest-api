@@ -85,3 +85,101 @@ export const getSinglePricingModel = asyncHandler(async (ctx) => {
 		}
 	};
 });
+
+export const updatePricingModel = asyncHandler(async (ctx) => {
+	const { pmId } = ctx.params;
+	const { name } = ctx.request.body;
+
+	const updatedPricingModel = await knex(tables.price)
+		.where('id', '=', pmId)
+		.update({ 'name': name });
+
+	ctx.assert(updatedPricingModel, 400, {
+		status: resStatuses.error,
+		message: 'Something went wrong, could not update pricing model'
+	});
+
+	ctx.status = 200;
+	ctx.body = {
+		status: resStatuses.success
+	};
+});
+
+export const getPriceConfig = asyncHandler(async (ctx) => {
+	const { pmId } = ctx.params;
+
+	const priceConfig = await knex(tables.price)
+		.select([`${tables.priceConfig}.*`])
+		.where(`${tables.price}.id`, '=', pmId)
+		.join(
+			`${tables.priceConfig}`,
+			`${tables.price}.id`,
+			`${tables.priceConfig}.pricing_id`
+		);
+
+	ctx.assert(priceConfig, 500, {
+		status: resStatuses.error,
+		message: `Something went wrong, could not get price config for price model ${pmId}`
+	});
+
+	ctx.status = 200;
+	ctx.body = {
+		status: resStatuses.success,
+		priceConfig
+	};
+});
+
+export const createPriceConfig = asyncHandler(async (ctx) => {
+	const { pmId } = ctx.params;
+	const { name, price, value } = ctx.request.body;
+
+	const priceConfig = await knex(tables.priceConfig)
+		.insert({
+			id: v4(),
+			name,
+			price,
+			value,
+			// eslint-disable-next-line camelcase
+			pricing_id: pmId
+		});
+
+	ctx.assert(priceConfig, 500, {
+		status: resStatuses.error,
+		message: `Something went wrong, could not create price config for model id ${pmId}`
+	});
+
+	ctx.status = 201;
+	ctx.body = {
+		status: resStatuses.success
+	};
+});
+
+export const removePriceConfig = asyncHandler(async (ctx) => {
+	const { pmId, priceId } = ctx.params;
+
+	const [priceModel] = await knex(tables.price)
+		.where('id', '=', pmId);
+
+	ctx.assert(priceModel, 404, {
+		status: resStatuses.error,
+		message: `Pricing model with id ${pmId} not found`
+	});
+
+	const [priceConfig] = await knex(tables.priceConfig)
+		.where('id', '=', priceId);
+
+	ctx.assert(priceConfig, 404, {
+		status: resStatuses.error,
+		message: `Price config with id ${pmId} not found`
+	});
+
+	await knex(tables.priceConfig)
+		.where('pricing_id', '=', pmId)
+		.andWhere('id', '=', priceId)
+		.del();
+
+	ctx.status = 200;
+	ctx.body = {
+		status: resStatuses.success
+	};
+});
