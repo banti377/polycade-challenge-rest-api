@@ -11,9 +11,12 @@
 	},
 	"license": "MIT",
 	"dependencies": {
+		"dotenv": "^10.0.0",
+		"knex": "^0.95.14",
 		"koa": "^2.11.0",
 		"koa-bodyparser": "^4.2.1",
 		"koa-router": "^8.0.6",
+		"pg": "^8.7.1",
 		"uuid": "^3.4.0"
 	},
 	"devDependencies": {
@@ -29,6 +32,6 @@
 		"testEnvironment": "node",
 		"testPathIgnorePatterns": [
 			"<rootDir>/node_modules"
-	]
+		]
 	}
 }
