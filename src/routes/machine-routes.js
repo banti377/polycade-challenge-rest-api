@@ -7,6 +7,8 @@ const machineRoutes = new Router({
 });
 
 machineRoutes
-	.put('/:machineId/prices/:pmId', machineController.updatePriceConfigForMachine);
+	.put('/:machineId/prices/:pmId', machineController.updatePriceConfigForMachine)
+	.delete('/:machineId/prices/:pmId', machineController.removePriceModelFromMachine)
+	.get('/:machineId/prices', machineController.getPricingDetailsForMachine);
 
 export default machineRoutes;
