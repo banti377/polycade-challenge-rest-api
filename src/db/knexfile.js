@@ -1,9 +1,11 @@
-import dotenv from 'dotenv';
+const path = require('path');
+const dotenv = require('dotenv');
+
 dotenv.config();
 
-import config from '../config';
+const config = require('../config');
 
-export const dbConfig = {
+module.exports = {
 	development: {
 		client: 'postgresql',
 		connection: {
@@ -11,13 +13,13 @@ export const dbConfig = {
 			port: config.dbPort,
 			user: config.dbUser,
 			password: config.dbPassword,
-			database: 'polycade'
+			database: config.dbName
 		},
 		migrations: {
-			directory: 'migrations',
-			stub: 'migrations/migration.stub',
-			schemaName: 'public',
-			tableName: 'knex_migrations'
+			directory: path.join(__dirname, './migrations')
+		},
+		seeds: {
+			directory: path.join(__dirname, './seeds')
 		}
 	}
 };

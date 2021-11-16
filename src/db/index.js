@@ -1,5 +1,7 @@
 
-import { dbConfig } from './knexfile';
-import _knex from 'knex';
+const dbConfig = require('./knexfile');
+const _knex = require('knex');
 
-export const knex = _knex(dbConfig.development);
+const knex = _knex(dbConfig.development);
+
+module.exports = knex;

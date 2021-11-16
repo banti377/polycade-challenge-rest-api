@@ -1,8 +1,9 @@
-import Koa from 'koa';
-import Router from 'koa-router';
-import bodyParser from 'koa-bodyparser';
-import dotenv from 'dotenv';
-import { knex } from './db';
+const Koa = require('koa');
+const Router = require('koa-router');
+const bodyParser = require('koa-bodyparser');
+const dotenv = require('dotenv');
+
+const knex = require('./db/index');
 
 dotenv.config();
 
