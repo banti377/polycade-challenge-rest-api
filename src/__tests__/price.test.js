@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const request = require('supertest');
 const app = require('../index');
 const { resStatuses } = require('../constants');
@@ -14,10 +13,6 @@ describe('Pricing model tests.', () => {
 	// Generate invalid uuid to test 404.
 	const invalidUUID = v4();
 	const invalidPriceConfigUUID = v4();
-
-	afterAll(async () => {
-		await app.close();
-	});
 
 	// For endpoint GET /pricing-models
 	it('should get all pricing models and default pricing model.', async (done) => {
