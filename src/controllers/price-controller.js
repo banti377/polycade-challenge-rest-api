@@ -141,6 +141,14 @@ export const createPriceConfig = asyncHandler(async (ctx) => {
 	const { pmId } = ctx.params;
 	const { name, price, value } = ctx.request.body;
 
+	const [priceModel] = await knex(tables.price)
+		.where('id', '=', pmId);
+
+	ctx.assert(priceModel, 404, {
+		status: resStatuses.error,
+		message: `Could not find pricing model for id ${pmId}`
+	});
+
 	const priceConfig = await knex(tables.priceConfig)
 		.insert({
 			id: v4(),

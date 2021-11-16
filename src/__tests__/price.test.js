@@ -3,6 +3,8 @@ const request = require('supertest');
 const app = require('../index');
 const { resStatuses } = require('../constants');
 const { v4 } = require('uuid');
+const knex = require('../db');
+const tables = require('../constants/tables');
 
 const BASE_URL = '/pricing-models';
 
@@ -10,7 +12,8 @@ describe('Pricing model tests.', () => {
 	// From seed
 	const validPriceUUID = '3ba92095-3203-4888-a464-3c7d5d9acd7e';
 	// Generate invalid uuid to test 404.
-	const invalidUUID = '3ba92095-3203-4888-a464-3c7d5d9acd7f';
+	const invalidUUID = v4();
+	const invalidPriceConfigUUID = v4();
 
 	afterAll(async () => {
 		await app.close();
@@ -103,5 +106,67 @@ describe('Pricing model tests.', () => {
 		expect(res.body.data.priceConfig).toBeTruthy();
 
 		done();
+	});
+
+
+	// For endpoint POST /pricing-models/:pm-id/prices
+	describe('pricing config creation endpoints', () => {
+		it('should create price config for existing price model', async (done) => {
+			const res = await request(app.listen()).post(`${BASE_URL}/${validPriceUUID}/prices`).send({
+				name: 'price config name',
+				price: 60,
+				value: 65
+			});
+
+			expect(res.status).toEqual(201);
+			expect(res.body.status).toEqual(resStatuses.success);
+
+			done();
+		});
+
+		it('should throw 404 for invalid price model id', async (done) => {
+			const res = await request(app.listen()).post(`${BASE_URL}/${invalidUUID}/prices`).send({
+				name: 'price config name',
+				price: 60,
+				value: 65
+			});
+
+			expect(res.status).toEqual(404);
+			expect(res.body.status).toEqual(resStatuses.error);
+
+			done();
+		});
+	});
+
+
+	// For endpoint Delete /pricing-models/:pm-id/prices/:price-id
+	describe('pricing config deletion endpoints.', () => {
+		it('should delete price config for given pricing model and config.', async (done) => {
+			const [priceConfig] = await knex(tables.priceConfig).where('pricing_id', '=', validPriceUUID);
+			const res = await request(app.listen()).del(`${BASE_URL}/${validPriceUUID}/prices/${priceConfig.id}`);
+
+			expect(res.status).toEqual(200);
+			expect(res.body.status).toEqual(resStatuses.success);
+
+			done();
+		});
+
+		it('should throw 404 for invalid pricing model id.', async (done) => {
+			const res = await request(app.listen()).del(`${BASE_URL}/${invalidUUID}/prices/${invalidPriceConfigUUID}`);
+
+			expect(res.status).toEqual(404);
+			expect(res.body.status).toEqual(resStatuses.error);
+
+			done();
+		});
+
+		it('should throw 404 for invalid pricing config id.', async (done) => {
+			const res = await request(app.listen()).del(`${BASE_URL}/${validPriceUUID}/prices/${invalidPriceConfigUUID}`);
+
+			expect(res.status).toEqual(404);
+			expect(res.body.status).toEqual(resStatuses.error);
+
+			done();
+		});
 	});
 });
