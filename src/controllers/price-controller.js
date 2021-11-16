@@ -59,18 +59,19 @@ export const createPricingModel = asyncHandler(async (ctx) => {
 export const getSinglePricingModel = asyncHandler(async (ctx) => {
 	const { pmId } = ctx.params;
 
-	const pricingModel = await knex(tables.price)
+	const [pricingModel] = await knex(tables.price)
 		.select([
 			`${tables.price}.name as model_name`,
 			`${tables.price}.id as model_id`,
-			knex.raw(`json_build_object('id', ${tables.priceConfig}.id, 'name', ${tables.priceConfig}.name, 'value', ${tables.priceConfig}.value, 'price', ${tables.priceConfig}.price) as price_config`)
+			knex.raw(`array_agg(json_build_object('id', ${tables.priceConfig}.id, 'name', ${tables.priceConfig}.name, 'value', ${tables.priceConfig}.value, 'price', ${tables.priceConfig}.price)) as priceConfig`)
 		])
 		.where(`${tables.price}.id`, '=', pmId)
 		.join(
 			`${tables.priceConfig}`,
 			`${tables.price}.id`,
 			`${tables.priceConfig}.pricing_id`
-		);
+		)
+		.groupBy(['model_name', 'model_id']);
 
 	ctx.assert(pricingModel, 404, {
 		status: resStatuses.error,
