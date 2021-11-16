@@ -95,9 +95,9 @@ export const updatePricingModel = asyncHandler(async (ctx) => {
 		.where('id', '=', pmId)
 		.update({ 'name': name });
 
-	ctx.assert(updatedPricingModel, 400, {
+	ctx.assert(updatedPricingModel, 404, {
 		status: resStatuses.error,
-		message: 'Something went wrong, could not update pricing model'
+		message: `Could not find pricing model with id ${pmId}`
 	});
 
 	ctx.status = 200;
@@ -109,6 +109,14 @@ export const updatePricingModel = asyncHandler(async (ctx) => {
 export const getPriceConfig = asyncHandler(async (ctx) => {
 	const { pmId } = ctx.params;
 
+	const [price] = await knex(tables.price)
+		.where(`${tables.price}.id`, '=', pmId);
+
+	ctx.assert(price, 404, {
+		status: resStatuses.error,
+		message: `Could not find price config for price model ${pmId}`
+	});
+
 	const priceConfig = await knex(tables.price)
 		.select([`${tables.priceConfig}.*`])
 		.where(`${tables.price}.id`, '=', pmId)
@@ -118,15 +126,14 @@ export const getPriceConfig = asyncHandler(async (ctx) => {
 			`${tables.priceConfig}.pricing_id`
 		);
 
-	ctx.assert(priceConfig, 500, {
-		status: resStatuses.error,
-		message: `Something went wrong, could not get price config for price model ${pmId}`
-	});
+
 
 	ctx.status = 200;
 	ctx.body = {
 		status: resStatuses.success,
-		priceConfig
+		data: {
+			priceConfig
+		}
 	};
 });
 
