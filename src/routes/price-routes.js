@@ -13,6 +13,6 @@ priceRoutes
 	.put('/:pmId', priceController.updatePricingModel)
 	.get('/:pmId/prices', priceController.getPriceConfig)
 	.post('/:pmId/prices', priceController.createPriceConfig)
-  .delete('/:pmId/prices/:priceId', priceController.removePriceConfig);
+	.delete('/:pmId/prices/:priceId', priceController.removePriceConfig);
 
 export default priceRoutes;
