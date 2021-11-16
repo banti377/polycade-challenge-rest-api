@@ -2,6 +2,7 @@ import Koa from 'koa';
 import Router from 'koa-router';
 import bodyParser from 'koa-bodyparser';
 import dotenv from 'dotenv';
+import { knex } from './db';
 
 dotenv.config();
 
@@ -17,6 +18,6 @@ router
 
 app
 	.use(router.routes())
-	.listen(PORT, () =>
-		console.log(`Server listening on port ${PORT}`)
-	);
+	.listen(PORT, () => {
+		console.log(`Server listening on port ${PORT}`);
+	});
