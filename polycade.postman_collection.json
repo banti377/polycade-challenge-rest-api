@@ -1,0 +1,259 @@
+{
+	"info": {
+		"_postman_id": "66f77e0b-a7ee-43de-80bf-5c050c0c76fb",
+		"name": "polycade",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "pricing-models",
+			"item": [
+				{
+					"name": "getAllPricingModels",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pricing-models",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pricing-models"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createPricingModel",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/pricing-models",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pricing-models"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getIndividualPricingModel",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pricing-models/3ba92095-3203-4888-a464-3c7d5d9acd7e",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pricing-models",
+								"3ba92095-3203-4888-a464-3c7d5d9acd7e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updatePricingModel",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"updated name\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/pricing-models/3ba92095-3203-4888-a464-3c7d5d9acd7e",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pricing-models",
+								"3ba92095-3203-4888-a464-3c7d5d9acd7e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getIndividualPriceConfig",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pricing-models/3ba92095-3203-4888-a464-3c7d5d9acd7e/prices",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pricing-models",
+								"3ba92095-3203-4888-a464-3c7d5d9acd7e",
+								"prices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createPriceConfigForModel",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"for model\",\n    \"value\": 90,\n    \"price\": 20\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/pricing-models/3ba92095-3203-4888-a464-3c7d5d9acd7e/prices",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pricing-models",
+								"3ba92095-3203-4888-a464-3c7d5d9acd7e",
+								"prices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deletePricingModel",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pricing-models/3ba92095-3203-4788-a464-3c7d5d9acd7e/prices/3c683ef0-9852-47ec-91f6-6a845884ff14",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pricing-models",
+								"3ba92095-3203-4788-a464-3c7d5d9acd7e",
+								"prices",
+								"3c683ef0-9852-47ec-91f6-6a845884ff14"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "machines",
+			"item": [
+				{
+					"name": "getPriceDetailsForMachine",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/machines/5632e1ec-46cb-4895-bc8b-a91644568cd5/prices",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"machines",
+								"5632e1ec-46cb-4895-bc8b-a91644568cd5",
+								"prices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "removePricingModelFromMachine",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/machines/4111947a-6c58-4977-90fa-2caaaef88648/prices/3ba92095-3203-4888-a464-3c7d5d9acd7e",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"machines",
+								"4111947a-6c58-4977-90fa-2caaaef88648",
+								"prices",
+								"3ba92095-3203-4888-a464-3c7d5d9acd7e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addPricingModelToMachine",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/machines/4111947a-6c58-4977-90fa-2caaaef88648/prices/5ba92095-3203-4888-a464-3c7d5d9acd7e",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"machines",
+								"4111947a-6c58-4977-90fa-2caaaef88648",
+								"prices",
+								"5ba92095-3203-4888-a464-3c7d5d9acd7e"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://localhost:1337"
+		}
+	]
+}

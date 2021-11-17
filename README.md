@@ -6,6 +6,31 @@
 
 Our apps need to query and store lots of information. We want to make sure that you have a good understanding of JavaScript and Node.js fundamentals. Can you build a simple API that can read data from and write data to a PostgreSQL database with Node.js?
 
+## Project Setup
+
+Follow this steps to setup and run project in your local machine.
+
+- Clone this repo by running (via SSH, please use different method if you don't want to clone via SSH).
+  - `git clone git@github.com:banti377/polycade-challenge-rest-api.git`
+- Change working directory to project directory.
+- Create 2 databases, one for development and other for tests.
+  - if you have docker-compose installed you can skip creating database for testing, intructions are below for running test db via docker-compose. 
+- Create an env file based on `.env.example`
+- Run `npm run migrate` to run database migrations.
+- Run `npm run seed` for seeding.
+- Run `npm start` to start the development server.
+- Run `npm test` for running tests. (It will automatically run migrations and seeds everytime you run this, so you don't have to worry about that. we don't do that for development as we don't want to run migrations and/or seeds everytime we start development server).
+
+### Instrucitons for running test database via docker-compose
+- if you're on GNU/Linux just run `make db` and postgres container will start.
+  - else just run `docker-compose -f docker-compose.yml up`
+- Do note the database name, username, password and port. (you can change these in `docker-compose.yml` file you want).
+  - Port: `54320`
+  - Useranme: `postgres`
+  - Password: `password`
+  - DBName: `test-polycade`
+
+
 ## The Challenge
 
 Build a REST API that will allow Polycade to manage pricing individually on machines remotely with the following:

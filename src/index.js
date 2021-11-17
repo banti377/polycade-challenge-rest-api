@@ -1,11 +1,11 @@
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import dotenv from 'dotenv';
+dotenv.config();
 
 import machineRoutes from './routes/machine-routes';
 import priceRoutes from './routes/price-routes';
 
-dotenv.config();
 
 const app = new Koa();
 const PORT = process.env.PORT || 1337;

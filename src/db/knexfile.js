@@ -1,4 +1,6 @@
 const path = require('path');
+const dotenv = require('dotenv');
+dotenv.config({ path: '../../.env' });
 
 const config = require('../config');
 
@@ -23,7 +25,7 @@ module.exports = {
 		client: 'postgresql',
 		connection: {
 			host: config.dbHost,
-			port: config.dbPort,
+			port: config.testDBPort,
 			user: config.dbUser,
 			password: config.dbPassword,
 			database: config.testDBName
