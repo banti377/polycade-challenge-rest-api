@@ -8,16 +8,16 @@ import { v4 } from 'uuid';
 export const getAllPricingModels = asyncHandler(async (ctx) =>{
 	const pricingModels = await knex(tables.price)
 		.select([
-			`${tables.price}.name as model_name`,
-			`${tables.price}.id as model_id`,
-			knex.raw(`array_agg(json_build_object('id', ${tables.priceConfig}.id, 'name', ${tables.priceConfig}.name, 'value', ${tables.priceConfig}.value, 'price', ${tables.priceConfig}.price)) as price_config`)
+			`${tables.price}.name`,
+			`${tables.price}.id`,
+			knex.raw(`array_agg(json_build_object('id', ${tables.priceConfig}.id, 'name', ${tables.priceConfig}.name, 'value', ${tables.priceConfig}.value, 'price', ${tables.priceConfig}.price)) as pricing`)
 		])
 		.leftJoin(
 			`${tables.priceConfig}`,
 			`${tables.price}.id`,
 			`${tables.priceConfig}.pricing_id`
 		)
-		.groupBy(['model_name', 'model_id']);
+		.groupBy([`${tables.price}.name`, `${tables.price}.id`]);
 
 	ctx.status = 200;
 	ctx.body = {
@@ -187,13 +187,16 @@ export const removePriceConfig = asyncHandler(async (ctx) => {
 
 	ctx.assert(priceConfig, 404, {
 		status: resStatuses.error,
-		message: `Price config with id ${pmId} not found`
+		message: `Price config with id ${priceId} not found`
 	});
 
 	await knex(tables.priceConfig)
 		.where('pricing_id', '=', pmId)
 		.andWhere('id', '=', priceId)
-		.del();
+		.update({
+			// eslint-disable-next-line camelcase
+			pricing_id: null
+		});
 
 	ctx.status = 200;
 	ctx.body = {
