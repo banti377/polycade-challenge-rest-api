@@ -55,7 +55,7 @@ describe('Pricing model tests.', () => {
 			expect(res.status).toEqual(200);
 			expect(res.body.status).toEqual(resStatuses.success);
 			expect(res.body.data.pricingModel).toBeTruthy();
-			expect(res.body.data.pricingModel.priceconfig).toBeTruthy();
+			expect(res.body.data.pricingModel.pricing).toBeTruthy();
 
 			done();
 		});
@@ -103,7 +103,7 @@ describe('Pricing model tests.', () => {
 
 		expect(res.status).toEqual(200);
 		expect(res.body.status).toEqual(resStatuses.success);
-		expect(res.body.data.priceConfig).toBeTruthy();
+		expect(res.body.data.pricing).toBeTruthy();
 
 		done();
 	});

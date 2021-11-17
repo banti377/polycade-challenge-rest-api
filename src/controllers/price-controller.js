@@ -69,8 +69,8 @@ export const getSinglePricingModel = asyncHandler(async (ctx) => {
 
 	const [pricingModel] = await knex(tables.price)
 		.select([
-			`${tables.price}.name as model_name`,
-			`${tables.price}.id as model_id`,
+			`${tables.price}.name`,
+			`${tables.price}.id`,
 			knex.raw(`
         array_agg(
           case
@@ -86,7 +86,7 @@ export const getSinglePricingModel = asyncHandler(async (ctx) => {
 			`${tables.price}.id`,
 			`${tables.priceConfig}.pricing_id`
 		)
-		.groupBy(['model_name', 'model_id']);
+		.groupBy([`${tables.price}.name`, `${tables.price}.id`]);
 
 	ctx.assert(pricingModel, 404, {
 		status: resStatuses.error,
@@ -147,7 +147,7 @@ export const getPriceConfig = asyncHandler(async (ctx) => {
 	ctx.body = {
 		status: resStatuses.success,
 		data: {
-			priceConfig
+			pricing: priceConfig
 		}
 	};
 });
@@ -202,6 +202,11 @@ export const removePriceConfig = asyncHandler(async (ctx) => {
 	ctx.assert(priceConfig, 404, {
 		status: resStatuses.error,
 		message: `Price config with id ${priceId} not found`
+	});
+
+	ctx.assert(priceConfig.pricing_id, {
+		status: resStatuses.error,
+		message: `Price config with id ${priceId} does not have any pricing model.`
 	});
 
 	await knex(tables.priceConfig)

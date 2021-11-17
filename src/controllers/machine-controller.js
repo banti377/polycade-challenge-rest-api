@@ -53,6 +53,11 @@ export const removePriceModelFromMachine = asyncHandler(async (ctx) => {
 		message: `Could not find price model with id ${pmId}`
 	});
 
+	ctx.assert(machine.pricing_id || priceModel.id === machine.pricing_id, 400, {
+		status: resStatuses.error,
+		message: 'Machine does not have any pricing model or the provided pricing model does not match.'
+	});
+
 	await knex(tables.machine)
 		.where('id', '=', machineId)
 		.update({
@@ -78,9 +83,9 @@ export const getPricingDetailsForMachine = asyncHandler(async (ctx) => {
 
 	const [priceDetails] = await knex(tables.price)
 		.select([
-			`${tables.price}.name as model_name`,
-			`${tables.price}.id as model_id`,
-			knex.raw(`json_build_object('id', ${tables.priceConfig}.id, 'name', ${tables.priceConfig}.name, 'value', ${tables.priceConfig}.value, 'price', ${tables.priceConfig}.price) as price_config`)
+			`${tables.price}.name`,
+			`${tables.price}.id`,
+			knex.raw(`json_build_object('id', ${tables.priceConfig}.id, 'name', ${tables.priceConfig}.name, 'value', ${tables.priceConfig}.value, 'price', ${tables.priceConfig}.price) as pricing`)
 		])
 		.where(`${tables.price}.id`, '=', machine.pricing_id)
 		.leftJoin(
