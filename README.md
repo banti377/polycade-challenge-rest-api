@@ -16,6 +16,7 @@ Follow this steps to setup and run project in your local machine.
 - Create 2 databases, one for development and other for tests.
   - if you have docker-compose installed you can skip creating database for testing, intructions are below for running test db via docker-compose. 
 - Create an env file based on `.env.example`
+- Run `npm install` to install all dependencies.
 - Run `npm run migrate` to run database migrations.
 - Run `npm run seed` for seeding.
 - Run `npm start` to start the development server.

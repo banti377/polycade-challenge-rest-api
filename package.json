@@ -5,17 +5,18 @@
 	"scripts": {
 		"lint": "eslint src/index.js",
 		"start": "babel-node src/index.js",
-		"test": "npm run test-migrate && npm run test-seed && NODE_ENV=test jest",
+		"test": "npm run test-migrate && npm run test-seed && cross-env NODE_ENV=test jest",
 		"watch": "nodemon --exec babel-node --watch src/index.js",
 		"watch-test": "jest --watch",
-    "migrate": "knex migrate:latest --knexfile ./src/db/knexfile.js",
-    "seed": "knex seed:run --knexfile ./src/db/knexfile.js",
-    "test-migrate": "NODE_ENV=test knex migrate:latest --knexfile ./src/db/knexfile.js",
-    "test-seed": "NODE_ENV=test knex seed:run --knexfile ./src/db/knexfile.js",
+		"migrate": "knex migrate:latest --knexfile ./src/db/knexfile.js",
+		"seed": "knex seed:run --knexfile ./src/db/knexfile.js",
+		"test-migrate": "cross-env NODE_ENV=test knex migrate:latest --knexfile ./src/db/knexfile.js",
+		"test-seed": "cross-env NODE_ENV=test knex seed:run --knexfile ./src/db/knexfile.js",
 		"knex": "knex --knexfile ./src/db/knexfile.js"
 	},
 	"license": "MIT",
 	"dependencies": {
+		"cross-env": "^7.0.3",
 		"dotenv": "^10.0.0",
 		"knex": "^0.95.14",
 		"koa": "^2.11.0",
