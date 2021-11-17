@@ -10,7 +10,14 @@ export const getAllPricingModels = asyncHandler(async (ctx) =>{
 		.select([
 			`${tables.price}.name`,
 			`${tables.price}.id`,
-			knex.raw(`array_agg(json_build_object('id', ${tables.priceConfig}.id, 'name', ${tables.priceConfig}.name, 'value', ${tables.priceConfig}.value, 'price', ${tables.priceConfig}.price)) as pricing`)
+			knex.raw(`
+        array_agg(
+          case
+            when ${tables.priceConfig}.id IS NOT NULL then json_build_object('id', ${tables.priceConfig}.id, 'name', ${tables.priceConfig}.name, 'value', ${tables.priceConfig}.value, 'price', ${tables.priceConfig}.price)
+            else null
+          end
+        ) filter (where ${tables.priceConfig}.id is not null) as pricing
+      `)
 		])
 		.leftJoin(
 			`${tables.priceConfig}`,
@@ -64,7 +71,14 @@ export const getSinglePricingModel = asyncHandler(async (ctx) => {
 		.select([
 			`${tables.price}.name as model_name`,
 			`${tables.price}.id as model_id`,
-			knex.raw(`array_agg(json_build_object('id', ${tables.priceConfig}.id, 'name', ${tables.priceConfig}.name, 'value', ${tables.priceConfig}.value, 'price', ${tables.priceConfig}.price)) as priceConfig`)
+			knex.raw(`
+        array_agg(
+          case
+            when ${tables.priceConfig}.id IS NOT NULL then json_build_object('id', ${tables.priceConfig}.id, 'name', ${tables.priceConfig}.name, 'value', ${tables.priceConfig}.value, 'price', ${tables.priceConfig}.price)
+            else null
+          end
+        ) filter (where ${tables.priceConfig}.id is not null) as pricing
+      `)
 		])
 		.where(`${tables.price}.id`, '=', pmId)
 		.leftJoin(
